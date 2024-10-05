@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_app/data/questions.dart';
 import 'package:quiz_app/gradient_container.dart';
 import 'package:quiz_app/questions_screen.dart';
+import 'package:quiz_app/results_screen.dart';
 import 'package:quiz_app/start_screen.dart';
 
 class Quiz extends StatefulWidget {
@@ -38,25 +39,31 @@ class _QuizState extends State<Quiz> {
     if (selectedAnswers.length == questions.length) {
       selectedAnswers.clear();
       setState(() {
-        activeScreen = 'start-screen';
+        activeScreen = 'results-screen';
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget screenWidget = activeScreen == 'start-screen'
-        ? StartScreen(switchScreen)
-        : QuestionsScreen(
-            onSelectAnswer: storeAnswer,
-          );
+    Widget? screenWidget = StartScreen(switchScreen);
+
+    if (activeScreen == 'questions-screen') {
+      screenWidget = QuestionsScreen(
+        onSelectAnswer: storeAnswer,
+      );
+    }
+
+    if (activeScreen == 'results-screen') {
+      screenWidget = const ResultsScreen();
+    }
 
     // Screen switching method 2
-    // if (activeScreen == 'start-screen') {
-    //   screenWidget = StartScreen(switchScreen);
-    // } else {
-    //   screenWidget = const QuestionsScreen();
-    // }
+    // Widget screenWidget = activeScreen == 'start-screen'
+    //     ? StartScreen(switchScreen)
+    //     : QuestionsScreen(
+    //         onSelectAnswer: storeAnswer,
+    //       );
 
     return MaterialApp(
       home: Scaffold(
