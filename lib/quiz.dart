@@ -37,11 +37,17 @@ class _QuizState extends State<Quiz> {
     selectedAnswers.add(answer);
 
     if (selectedAnswers.length == questions.length) {
-      // selectedAnswers.clear();
       setState(() {
         activeScreen = 'results-screen';
       });
     }
+  }
+
+  void restartQuiz() {
+    selectedAnswers.clear();
+    setState(() {
+      activeScreen = 'questions-screen';
+    });
   }
 
   @override
@@ -55,7 +61,10 @@ class _QuizState extends State<Quiz> {
     }
 
     if (activeScreen == 'results-screen') {
-      screenWidget = ResultsScreen(choosenAnswers: selectedAnswers);
+      screenWidget = ResultsScreen(
+        choosenAnswers: selectedAnswers,
+        restartQuiz: restartQuiz,
+      );
     }
 
     // Screen switching method 2
